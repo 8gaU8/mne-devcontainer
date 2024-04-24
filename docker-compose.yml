@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/workspace:cached
+      - pip-volume:/workspace/vendor
+      - my-smb:/smb
+volumes:
+  pip-volume:
+  my-smb:
+    driver_opts:
+      type: cifs
+      o: "username=${NAS_UNAME},password=${NAS_PSWD}"
+      device: "//${NAS_IP_ADDR}/data"
